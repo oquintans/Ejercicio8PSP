@@ -14,20 +14,24 @@ import java.util.logging.Logger;
  */
 public class Hilos {
 
-    static int semaforo;
+    private static int semaforo;
 
     public Hilos() {
-        super();
     }
 
     public synchronized void hilo1() {
-        do {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Hilos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } while (semaforo != 011);
+
+        if (semaforo != 011) {
+            do {
+                try {
+                    System.out.println("hilo1 en espera");
+                    wait();
+                    System.out.println("hilo1 termina de esperar");
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Hilos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } while (semaforo != 011);
+        }
 
         for (int i = 0; i < 10; i++) {
             System.out.println("Hilo1 i=" + (i + 1));
@@ -38,13 +42,17 @@ public class Hilos {
 
     public synchronized void hilo2() {
 
-        do {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Hilos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } while (semaforo != 001);
+        if (semaforo != 001) {
+            do {
+                try {
+                    System.out.println("hilo2 en espera");
+                    wait();
+                    System.out.println("hilo2 termina de esperar");
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Hilos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } while (semaforo != 001);
+        }
 
         for (int i = 0; i < 10; i++) {
             System.out.println("Hilo2 i=" + (i + 1));
@@ -56,6 +64,7 @@ public class Hilos {
     }
 
     public synchronized void hilo3() {
+
         for (int i = 0; i < 10; i++) {
             System.out.println("Hilo3 i=" + (i + 1));
             semaforo = 001;
